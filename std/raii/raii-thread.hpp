@@ -10,9 +10,17 @@ public:
 			: m_thread([this, callable{std::move(callable)}]() { callable(m_interrupted); }) {
 	}
 
-	~raii_thread() {
+	void interrupt() {
 		m_interrupted = true;
+	}
+
+	void join() {
 		m_thread.join();
+	}
+
+	~raii_thread() {
+		interrupt();
+		join();
 	}
 
 private:
