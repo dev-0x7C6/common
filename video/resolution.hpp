@@ -43,7 +43,7 @@ public:
 	}
 
 	constexpr auto is_valid() const noexcept {
-		return (m_w == 0) && (m_h == 0);
+		return (m_w != 0) && (m_h != 0);
 	}
 
 	friend constexpr auto operator==(const resolution &lhs, const resolution &rhs) noexcept {
@@ -62,3 +62,13 @@ private:
 	resolution_unit m_w{};
 	resolution_unit m_h{};
 };
+
+static_assert(resolution(800, 600) == resolution(800, 600));
+static_assert(resolution(800, 600) != resolution(600, 800));
+static_assert(resolution(800, 600) < resolution(1024, 768));
+static_assert(resolution(640, 480).is_aspect_4_3());
+static_assert(resolution(640, 480).is_valid());
+static_assert(resolution(1280, 720).is_aspect_16_9());
+static_assert(resolution(1920, 1080).is_aspect_16_9());
+static_assert(resolution(1920, 1200).is_aspect_16_10());
+static_assert(resolution(349, 300).aspect() == resolution::aspect_ratio::other);
